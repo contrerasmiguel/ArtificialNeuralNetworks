@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
-namespace Perceptron
+namespace Common
 {
     [DataContract]
-    class TrainingElement
+    public class TrainingElement
     {
         public double C
         {
@@ -46,9 +46,9 @@ namespace Perceptron
         double c, x, y;
 
         [DataMember]
-        int sigma;
+        double sigma;
 
-        public TrainingElement(double c, double x, double y, int sigma)
+        public TrainingElement(double c, double x, double y, double sigma)
         {
             this.c = c;
             this.x = x;

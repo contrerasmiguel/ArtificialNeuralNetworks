@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Test));
             this.btnMainMenu = new System.Windows.Forms.Button();
             this.chrtHypSeparator = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnTrain = new System.Windows.Forms.Button();
+            this.lblTrainingStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chrtHypSeparator)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,16 +51,16 @@
             // 
             // chrtHypSeparator
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chrtHypSeparator.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chrtHypSeparator.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.chrtHypSeparator.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chrtHypSeparator.Legends.Add(legend1);
             this.chrtHypSeparator.Location = new System.Drawing.Point(12, 12);
             this.chrtHypSeparator.Name = "chrtHypSeparator";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chrtHypSeparator.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chrtHypSeparator.Series.Add(series1);
             this.chrtHypSeparator.Size = new System.Drawing.Size(600, 380);
             this.chrtHypSeparator.TabIndex = 4;
             this.chrtHypSeparator.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chrtHypSeparator_MouseUp);
@@ -73,20 +75,31 @@
             this.btnTrain.UseVisualStyleBackColor = true;
             this.btnTrain.Click += new System.EventHandler(this.btnTrain_Click);
             // 
+            // lblTrainingStatus
+            // 
+            this.lblTrainingStatus.AutoSize = true;
+            this.lblTrainingStatus.Location = new System.Drawing.Point(435, 408);
+            this.lblTrainingStatus.Name = "lblTrainingStatus";
+            this.lblTrainingStatus.Size = new System.Drawing.Size(0, 13);
+            this.lblTrainingStatus.TabIndex = 7;
+            // 
             // Test
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
+            this.Controls.Add(this.lblTrainingStatus);
             this.Controls.Add(this.btnTrain);
             this.Controls.Add(this.btnMainMenu);
             this.Controls.Add(this.chrtHypSeparator);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Test";
             this.Text = "Prueba";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Test_FormClosed);
             this.VisibleChanged += new System.EventHandler(this.Test_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.chrtHypSeparator)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -95,5 +108,6 @@
         private System.Windows.Forms.Button btnMainMenu;
         private System.Windows.Forms.DataVisualization.Charting.Chart chrtHypSeparator;
         private System.Windows.Forms.Button btnTrain;
+        private System.Windows.Forms.Label lblTrainingStatus;
     }
 }

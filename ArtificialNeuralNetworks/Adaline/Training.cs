@@ -10,15 +10,16 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using Common;
 
-namespace Perceptron
+namespace Adaline
 {
     public partial class Training : Form
     {
         MainMenu mainMenuWindow;
-        SeparatorLine sl;
+        SeparatorLine separatorLine;
         Series chartSepLine, redPoints, bluePoints;
-        List<DataPoint> dps;
+        List<DataPoint> dataPoints;
         bool dragging;
 
         public Training(MainMenu mainMenu)
@@ -26,12 +27,16 @@ namespace Perceptron
             InitializeComponent();
             mainMenuWindow = mainMenu;
 
-            sl = new SeparatorLine();
-            dps = new List<DataPoint>();
+            separatorLine = new SeparatorLine();
+            dataPoints = new List<DataPoint>();
 
             chrtHypSeparator.Series.Clear();
             chrtHypSeparator.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
             chrtHypSeparator.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+
+            chrtHypSeparator.ChartAreas[0].AxisX.Crossing = 0;
+            chrtHypSeparator.ChartAreas[0].AxisY.Crossing = 0;
+
             chrtHypSeparator.ChartAreas[0].AxisX.Minimum = 0;
             chrtHypSeparator.ChartAreas[0].AxisX.Maximum = 10;
             chrtHypSeparator.ChartAreas[0].AxisY.Minimum = 0;
@@ -42,9 +47,10 @@ namespace Perceptron
 
             chartSepLine = chrtHypSeparator.Series.Add("H. Separador");
             chartSepLine.ChartType = SeriesChartType.Line;
+            chartSepLine.Color = Color.Black;
             chartSepLine.Points.Clear();
-            chartSepLine.Points.AddXY(sl.P1.XValue, sl.P1.YValues[0]);
-            chartSepLine.Points.AddXY(sl.P2.XValue, sl.P2.YValues[0]);
+            chartSepLine.Points.AddXY(separatorLine.P1.XValue, separatorLine.P1.YValues[0]);
+            chartSepLine.Points.AddXY(separatorLine.P2.XValue, separatorLine.P2.YValues[0]);
 
             redPoints = chrtHypSeparator.Series.Add("Clase Rojo");
             redPoints.ChartType = SeriesChartType.Point;
@@ -75,7 +81,7 @@ namespace Perceptron
 
             if (rbDrawLine.Checked)
             {
-                sl.P1 = new DataPoint(x, y);
+                separatorLine.P1 = new DataPoint(x, y);
             }
 
             dragging = true;
@@ -88,20 +94,20 @@ namespace Perceptron
 
             if (rbDrawLine.Checked)
             {
-                sl.P2 = new DataPoint(x, y);
+                separatorLine.P2 = new DataPoint(x, y);
 
                 chartSepLine.Points.Clear();
-                chartSepLine.Points.AddXY(sl.P1.XValue, sl.P1.YValues[0]);
-                chartSepLine.Points.AddXY(sl.P2.XValue, sl.P2.YValues[0]);
+                chartSepLine.Points.AddXY(separatorLine.P1.XValue, separatorLine.P1.YValues[0]);
+                chartSepLine.Points.AddXY(separatorLine.P2.XValue, separatorLine.P2.YValues[0]);
 
                 ClassifyPoints();
             }
             else
             {
                 var dp = new DataPoint(x, y);
-                dps.Add(dp);
+                dataPoints.Add(dp);
 
-                ((sl.TestPoint(dp) == 1) ? redPoints : bluePoints).Points.Add(dp);
+                ((separatorLine.ActivationF(dp) < 0) ? redPoints : bluePoints).Points.Add(dp);
             }
 
             StoreTrainingSet();
@@ -110,12 +116,12 @@ namespace Perceptron
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            sl = new SeparatorLine();
-            dps.Clear();
+            separatorLine = new SeparatorLine();
+            dataPoints.Clear();
 
             chartSepLine.Points.Clear();
-            chartSepLine.Points.AddXY(sl.P1.XValue, sl.P1.YValues[0]);
-            chartSepLine.Points.AddXY(sl.P2.XValue, sl.P2.YValues[0]);
+            chartSepLine.Points.AddXY(separatorLine.P1.XValue, separatorLine.P1.YValues[0]);
+            chartSepLine.Points.AddXY(separatorLine.P2.XValue, separatorLine.P2.YValues[0]);
 
             redPoints.Points.Clear();
             bluePoints.Points.Clear();
@@ -130,11 +136,11 @@ namespace Perceptron
                 double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
                 double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
 
-                sl.P2 = new DataPoint(x, y);
+                separatorLine.P2 = new DataPoint(x, y);
 
                 chartSepLine.Points.Clear();
-                chartSepLine.Points.AddXY(sl.P1.XValue, sl.P1.YValues[0]);
-                chartSepLine.Points.AddXY(sl.P2.XValue, sl.P2.YValues[0]);
+                chartSepLine.Points.AddXY(separatorLine.P1.XValue, separatorLine.P1.YValues[0]);
+                chartSepLine.Points.AddXY(separatorLine.P2.XValue, separatorLine.P2.YValues[0]);
 
                 ClassifyPoints();
             }
@@ -145,28 +151,28 @@ namespace Perceptron
             redPoints.Points.Clear();
             bluePoints.Points.Clear();
 
-            foreach (var dp in dps)
+            foreach (var dp in dataPoints)
             {
-                ((sl.TestPoint(dp) == 1) ? redPoints : bluePoints).Points.Add(dp);
+                ((separatorLine.ActivationF(dp) < 0) ? redPoints : bluePoints).Points.Add(dp);
             }
         }
 
         private void StoreTrainingSet()
         {
             var profilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var perceptronPath = Path.Combine(profilePath, @"Perceptron");
+            var perceptronPath = Path.Combine(profilePath, @"ANN");
 
             if (!Directory.Exists(perceptronPath))
             {
                 Directory.CreateDirectory(perceptronPath);
             }
 
-            var path = Path.Combine(perceptronPath, @"TrainingSet.json");
+            var path = Path.Combine(perceptronPath, @"Adaline.TrainingSet.json");
 
             using (var fs = File.Open(path, FileMode.Create))
             {
                 var serializer = new DataContractJsonSerializer(typeof(List<TrainingElement>));
-                var trainingSet = dps.Select(dp => new TrainingElement(1, dp.XValue, dp.YValues[0], sl.TestPoint(dp)));
+                var trainingSet = dataPoints.Select(dp => new TrainingElement(1, dp.XValue, dp.YValues[0], separatorLine.ActivationF(dp)));
 
                 serializer.WriteObject(fs, trainingSet);
                 fs.Flush();

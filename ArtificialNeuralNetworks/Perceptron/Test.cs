@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
+using Common;
 
 namespace Perceptron
 {
@@ -19,16 +20,18 @@ namespace Perceptron
         Series chartSepLine, redPoints, bluePoints;
         List<TrainingElement> trainingSet;
 
-        const double LEARNING_RATE = 0.0001;
-        const long MAX_ITERATIONS = 20000;
+        const double MAX_ERROR = 0.0;
+        const double LEARNING_RATE = 0.01;
+        const long MAX_ITERATIONS = 5000;
         double wc, wy, wx;
         Timer timer;
         long iterations;
 
-        public Test(MainMenu mainMenu)
+        public Test(MainMenu mainMenu, List<TrainingElement> ts)
         {
             InitializeComponent();
             mainMenuWindow = mainMenu;
+            trainingSet = ts;
 
             chrtHypSeparator.Series.Clear();
             chrtHypSeparator.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
@@ -47,6 +50,7 @@ namespace Perceptron
 
             chartSepLine = chrtHypSeparator.Series.Add("H. Separador");
             chartSepLine.ChartType = SeriesChartType.Line;
+            chartSepLine.Color = Color.Black;
             chartSepLine.Points.Clear();
 
             redPoints = chrtHypSeparator.Series.Add("Clase Rojo");
@@ -70,6 +74,7 @@ namespace Perceptron
 
         private void Test_VisibleChanged(object sender, EventArgs e)
         {
+            lblTrainingStatus.Text = "Sin entrenar";
             LoadTrainingSet();
         }
 
@@ -83,11 +88,14 @@ namespace Perceptron
 
         private void Test_FormClosed(object sender, FormClosedEventArgs e)
         {
+            timer.Stop();
+            timer.Enabled = false;
             mainMenuWindow.Close();
         }
 
         private void btnTrain_Click(object sender, EventArgs e)
         {
+            lblTrainingStatus.Text = "Entrenando...";
             AssignRandomWeights();
 
             iterations = 0;
@@ -110,7 +118,7 @@ namespace Perceptron
                 wx += LEARNING_RATE * error * te.X;
                 wy += LEARNING_RATE * error * te.Y;
 
-                if (error != 0)
+                if (Math.Abs(error) > MAX_ERROR)
                 {
                     foundError = true;
                 }
@@ -122,6 +130,7 @@ namespace Perceptron
             if (!foundError || iterations >= MAX_ITERATIONS)
             {
                 timer.Stop();
+                lblTrainingStatus.Text = "¡Entrenada!";
             }
         }
 
@@ -134,10 +143,10 @@ namespace Perceptron
             double xRight = 100;
 
             // TO-DO: find out why yLeft depends on xRight.
-            double yLeft = -((wc - wx * xRight) / wy);
+            double yLeft = (wx * xRight - wc) / wy;
 
             // TO-DO: find out why yRight depends on xLeft.
-            double yRight = -((wc - wx * xLeft) / wy);
+            double yRight = (wx * xLeft - wc) / wy;
 
             chartSepLine.Points.AddXY(xLeft, yLeft);
             chartSepLine.Points.AddXY(xRight, yRight);
@@ -145,35 +154,6 @@ namespace Perceptron
 
         private void LoadTrainingSet()
         {
-            var profilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var perceptronPath = Path.Combine(profilePath, @"Perceptron");
-
-            if (!Directory.Exists(perceptronPath))
-            {
-                Directory.CreateDirectory(perceptronPath);
-            }
-
-            var path = Path.Combine(perceptronPath, @"TrainingSet.json");
-
-            if (File.Exists(path))
-            {
-                using (var fs = File.Open(path, FileMode.Open))
-                {
-                    var serializer = new DataContractJsonSerializer(typeof(List<TrainingElement>));
-
-                    try
-                    {
-                        trainingSet = serializer.ReadObject(fs) as List<TrainingElement>;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.Error.WriteLine(ex.Message);
-                    }
-
-                    fs.Flush();
-                }
-            }
-
             redPoints.Points.Clear();
             bluePoints.Points.Clear();
 
@@ -185,7 +165,7 @@ namespace Perceptron
 
         private int Output(double c, double x, double y)
         {
-            return ((wc * c + wx * x + wy * y) <= 0) ? -1 : 1;
+            return ((wc * c + wx * x + wy * y) < 0) ? -1 : 1;
         }
 
         private void AssignRandomWeights()

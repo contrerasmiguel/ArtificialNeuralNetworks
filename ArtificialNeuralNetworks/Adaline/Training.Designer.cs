@@ -1,4 +1,4 @@
-﻿namespace Perceptron
+﻿namespace Adaline
 {
     partial class Training
     {
@@ -31,6 +31,7 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Training));
             this.btnMainMenu = new System.Windows.Forms.Button();
             this.chrtHypSeparator = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.pnlRadioButtons = new System.Windows.Forms.Panel();
@@ -119,6 +120,7 @@
             this.Controls.Add(this.pnlRadioButtons);
             this.Controls.Add(this.btnMainMenu);
             this.Controls.Add(this.chrtHypSeparator);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Training";
             this.Text = "Entrenamiento";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Training_FormClosed);

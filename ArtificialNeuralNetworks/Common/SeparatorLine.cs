@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace Perceptron
+namespace Common
 {
     class SeparatorLine
     {
@@ -73,29 +73,13 @@ namespace Perceptron
             p2.XValue = 10;
         }
 
-        public int TestPoint(DataPoint dp)
+        public double ActivationF(DataPoint dp)
         {
-            DataPoint leftPoint, rightPoint;
-            double m, y;
+            // Ecuación de la recta que pasa por dos puntos igualada a cero.
+            double output = (dp.XValue - p1.XValue) * (p2.YValues[0] - p1.YValues[0]) / (p2.XValue - p1.XValue) + p1.YValues[0] - dp.YValues[0];
 
-            // Ordered by X
-            if (p1.XValue < p2.XValue)
-            {
-                leftPoint = p1;
-                rightPoint = p2;
-            }
-            else
-            {
-                leftPoint = p2;
-                rightPoint = p1;
-            }
-
-            // Line slope
-            m = (rightPoint.YValues[0] - leftPoint.YValues[0]) / (rightPoint.XValue - leftPoint.XValue);
-
-            y = m * (dp.XValue - leftPoint.XValue) + leftPoint.YValues[0];
-
-            return (y > dp.YValues[0]) ? -1 : 1;
+            return (output < 0) ? -1 : 1;
         }
+
     }
 }
