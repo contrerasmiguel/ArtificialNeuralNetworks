@@ -36,7 +36,10 @@
             this.chrtHypSeparator = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnTrain = new System.Windows.Forms.Button();
             this.lblTrainingStatus = new System.Windows.Forms.Label();
+            this.tbarVelocidad = new System.Windows.Forms.TrackBar();
+            this.lblVelocidad = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chrtHypSeparator)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbarVelocidad)).BeginInit();
             this.SuspendLayout();
             // 
             // btnMainMenu
@@ -61,7 +64,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chrtHypSeparator.Series.Add(series1);
-            this.chrtHypSeparator.Size = new System.Drawing.Size(600, 380);
+            this.chrtHypSeparator.Size = new System.Drawing.Size(600, 351);
             this.chrtHypSeparator.TabIndex = 4;
             this.chrtHypSeparator.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chrtHypSeparator_MouseUp);
             // 
@@ -83,11 +86,34 @@
             this.lblTrainingStatus.Size = new System.Drawing.Size(0, 13);
             this.lblTrainingStatus.TabIndex = 7;
             // 
+            // tbarVelocidad
+            // 
+            this.tbarVelocidad.LargeChange = 100;
+            this.tbarVelocidad.Location = new System.Drawing.Point(260, 369);
+            this.tbarVelocidad.Maximum = 500;
+            this.tbarVelocidad.Minimum = 1;
+            this.tbarVelocidad.Name = "tbarVelocidad";
+            this.tbarVelocidad.Size = new System.Drawing.Size(104, 45);
+            this.tbarVelocidad.SmallChange = 25;
+            this.tbarVelocidad.TabIndex = 8;
+            this.tbarVelocidad.Value = 1;
+            // 
+            // lblVelocidad
+            // 
+            this.lblVelocidad.AutoSize = true;
+            this.lblVelocidad.Location = new System.Drawing.Point(285, 417);
+            this.lblVelocidad.Name = "lblVelocidad";
+            this.lblVelocidad.Size = new System.Drawing.Size(54, 13);
+            this.lblVelocidad.TabIndex = 9;
+            this.lblVelocidad.Text = "Velocidad";
+            // 
             // Test
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
+            this.Controls.Add(this.lblVelocidad);
+            this.Controls.Add(this.tbarVelocidad);
             this.Controls.Add(this.lblTrainingStatus);
             this.Controls.Add(this.btnTrain);
             this.Controls.Add(this.btnMainMenu);
@@ -98,6 +124,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Test_FormClosed);
             this.VisibleChanged += new System.EventHandler(this.Test_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.chrtHypSeparator)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbarVelocidad)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,5 +136,7 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chrtHypSeparator;
         private System.Windows.Forms.Button btnTrain;
         private System.Windows.Forms.Label lblTrainingStatus;
+        private System.Windows.Forms.TrackBar tbarVelocidad;
+        private System.Windows.Forms.Label lblVelocidad;
     }
 }

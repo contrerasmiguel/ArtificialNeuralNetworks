@@ -47,14 +47,14 @@ namespace Adaline
         private List<TrainingElement> LoadTrainingSet()
         {
             var profilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var perceptronPath = Path.Combine(profilePath, @"ANN");
+            var adalinePath = Path.Combine(profilePath, @"ANN");
 
-            if (!Directory.Exists(perceptronPath))
+            if (!Directory.Exists(adalinePath))
             {
-                Directory.CreateDirectory(perceptronPath);
+                Directory.CreateDirectory(adalinePath);
             }
 
-            var path = Path.Combine(perceptronPath, @"Adaline.TrainingSet.json");
+            var path = Path.Combine(adalinePath, @"Adaline.TrainingSet.json");
 
             if (File.Exists(path))
             {

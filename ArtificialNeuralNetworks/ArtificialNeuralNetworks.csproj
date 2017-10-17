@@ -98,12 +98,6 @@
     <Compile Include="Adaline\Training.Designer.cs">
       <DependentUpon>Training.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\MainMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Common\MainMenu.Designer.cs">
-      <DependentUpon>MainMenu.cs</DependentUpon>
-    </Compile>
     <Compile Include="Common\TrainingElement.cs" />
     <Compile Include="NetworkTypeSelection.cs">
       <SubType>Form</SubType>
@@ -140,9 +134,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Adaline\Training.resx">
       <DependentUpon>Training.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Common\MainMenu.resx">
-      <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NetworkTypeSelection.resx">
       <DependentUpon>NetworkTypeSelection.cs</DependentUpon>

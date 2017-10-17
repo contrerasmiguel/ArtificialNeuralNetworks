@@ -35,10 +35,11 @@
             this.btnMainMenu = new System.Windows.Forms.Button();
             this.chrtHypSeparator = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnTrain = new System.Windows.Forms.Button();
-            this.lblMaxIterations = new System.Windows.Forms.Label();
             this.lblIterations = new System.Windows.Forms.Label();
-            this.tbMaxIterations = new System.Windows.Forms.TextBox();
+            this.lblVelocidad = new System.Windows.Forms.Label();
+            this.tbarVelocidad = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.chrtHypSeparator)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbarVelocidad)).BeginInit();
             this.SuspendLayout();
             // 
             // btnMainMenu
@@ -63,7 +64,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chrtHypSeparator.Series.Add(series1);
-            this.chrtHypSeparator.Size = new System.Drawing.Size(600, 380);
+            this.chrtHypSeparator.Size = new System.Drawing.Size(600, 358);
             this.chrtHypSeparator.TabIndex = 4;
             this.chrtHypSeparator.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chrtHypSeparator_MouseUp);
             // 
@@ -77,40 +78,44 @@
             this.btnTrain.UseVisualStyleBackColor = true;
             this.btnTrain.Click += new System.EventHandler(this.btnTrain_Click);
             // 
-            // lblMaxIterations
-            // 
-            this.lblMaxIterations.AutoSize = true;
-            this.lblMaxIterations.Location = new System.Drawing.Point(119, 408);
-            this.lblMaxIterations.Name = "lblMaxIterations";
-            this.lblMaxIterations.Size = new System.Drawing.Size(84, 13);
-            this.lblMaxIterations.TabIndex = 10;
-            this.lblMaxIterations.Text = "Max. iteraciones";
-            // 
             // lblIterations
             // 
             this.lblIterations.AutoSize = true;
-            this.lblIterations.Location = new System.Drawing.Point(324, 408);
+            this.lblIterations.Location = new System.Drawing.Point(435, 408);
             this.lblIterations.Name = "lblIterations";
             this.lblIterations.Size = new System.Drawing.Size(71, 13);
             this.lblIterations.TabIndex = 11;
             this.lblIterations.Text = "Iteraciones: 0";
             // 
-            // tbMaxIterations
+            // lblVelocidad
             // 
-            this.tbMaxIterations.Location = new System.Drawing.Point(209, 405);
-            this.tbMaxIterations.Name = "tbMaxIterations";
-            this.tbMaxIterations.Size = new System.Drawing.Size(100, 20);
-            this.tbMaxIterations.TabIndex = 12;
-            this.tbMaxIterations.TextChanged += new System.EventHandler(this.tbMaxIterations_TextChanged);
+            this.lblVelocidad.AutoSize = true;
+            this.lblVelocidad.Location = new System.Drawing.Point(285, 424);
+            this.lblVelocidad.Name = "lblVelocidad";
+            this.lblVelocidad.Size = new System.Drawing.Size(54, 13);
+            this.lblVelocidad.TabIndex = 13;
+            this.lblVelocidad.Text = "Velocidad";
+            // 
+            // tbarVelocidad
+            // 
+            this.tbarVelocidad.LargeChange = 200;
+            this.tbarVelocidad.Location = new System.Drawing.Point(260, 376);
+            this.tbarVelocidad.Maximum = 1000;
+            this.tbarVelocidad.Minimum = 1;
+            this.tbarVelocidad.Name = "tbarVelocidad";
+            this.tbarVelocidad.Size = new System.Drawing.Size(104, 45);
+            this.tbarVelocidad.SmallChange = 50;
+            this.tbarVelocidad.TabIndex = 12;
+            this.tbarVelocidad.Value = 1000;
             // 
             // Test
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
-            this.Controls.Add(this.tbMaxIterations);
+            this.Controls.Add(this.lblVelocidad);
+            this.Controls.Add(this.tbarVelocidad);
             this.Controls.Add(this.lblIterations);
-            this.Controls.Add(this.lblMaxIterations);
             this.Controls.Add(this.btnTrain);
             this.Controls.Add(this.btnMainMenu);
             this.Controls.Add(this.chrtHypSeparator);
@@ -120,6 +125,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Test_FormClosed);
             this.VisibleChanged += new System.EventHandler(this.Test_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.chrtHypSeparator)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbarVelocidad)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,8 +136,8 @@
         private System.Windows.Forms.Button btnMainMenu;
         private System.Windows.Forms.DataVisualization.Charting.Chart chrtHypSeparator;
         private System.Windows.Forms.Button btnTrain;
-        private System.Windows.Forms.Label lblMaxIterations;
         private System.Windows.Forms.Label lblIterations;
-        private System.Windows.Forms.TextBox tbMaxIterations;
+        private System.Windows.Forms.Label lblVelocidad;
+        private System.Windows.Forms.TrackBar tbarVelocidad;
     }
 }

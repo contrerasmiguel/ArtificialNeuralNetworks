@@ -99,7 +99,7 @@ namespace Perceptron
             AssignRandomWeights();
 
             iterations = 0;
-            timer.Interval = 1;
+            timer.Interval = tbarVelocidad.Maximum / tbarVelocidad.Value;
             timer.Tick += Timer_Tick;
             timer.Enabled = true;
             timer.Start();

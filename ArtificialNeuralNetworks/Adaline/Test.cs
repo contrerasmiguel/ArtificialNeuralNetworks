@@ -20,9 +20,8 @@ namespace Adaline
         Series chartSepLine, redPoints, bluePoints;
         List<TrainingElement> trainingSet;
 
-        const double MAX_ERROR = 0.01;
+        const double MAX_ERROR = 0.05;
         const double LEARNING_RATE = 0.01;
-        long maxIterations = 5000;
         double wc, wy, wx;
         Timer timer;
         long iterations;
@@ -75,7 +74,6 @@ namespace Adaline
         private void Test_VisibleChanged(object sender, EventArgs e)
         {
             lblIterations.Text = "Iteraciones: " + iterations;
-            tbMaxIterations.Text = maxIterations.ToString();
             LoadTrainingSet();
         }
 
@@ -126,7 +124,7 @@ namespace Adaline
 
             iterations += 1;
 
-            if (!foundError || iterations >= maxIterations)
+            if (!foundError)
             {
                 timer.Stop();
             }
@@ -134,11 +132,7 @@ namespace Adaline
             DrawSeparatorLine();
             lblIterations.Text = "Iteraciones: " + iterations;
         }
-
-        private void tbMaxIterations_TextChanged(object sender, EventArgs e)
-        {
-            maxIterations = int.Parse(tbMaxIterations.Text);
-        }
+            
 
         private void DrawSeparatorLine()
         {
