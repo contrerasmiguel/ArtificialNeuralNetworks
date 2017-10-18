@@ -76,8 +76,18 @@ namespace Adaline
 
         private void chrtHypSeparator_MouseDown(object sender, MouseEventArgs e)
         {
-            double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
-            double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
+            double x = 0, y = 0;
+
+            try
+            {
+                x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+            }
+            catch (ArgumentException)
+            {
+                Console.Error.WriteLine("ArgumentException: posición erronea ignorada.");
+                return;
+            }
 
             if (rbDrawLine.Checked)
             {
@@ -89,8 +99,18 @@ namespace Adaline
 
         private void chrtHypSeparator_MouseUp(object sender, MouseEventArgs e)
         {
-            double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
-            double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
+            double x = 0, y = 0;
+
+            try
+            {
+                x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+            }
+            catch (ArgumentException)
+            {
+                Console.Error.WriteLine("ArgumentException: posición erronea ignorada.");
+                return;
+            }
 
             if (rbDrawLine.Checked)
             {
@@ -107,7 +127,7 @@ namespace Adaline
                 var dp = new DataPoint(x, y);
                 dataPoints.Add(dp);
 
-                ((separatorLine.ActivationF(dp) < 0) ? redPoints : bluePoints).Points.Add(dp);
+                ((separatorLine.ActivationF(dp) >= 0) ? redPoints : bluePoints).Points.Add(dp);
             }
 
             StoreTrainingSet();
@@ -133,8 +153,18 @@ namespace Adaline
         {
             if (dragging && rbDrawLine.Checked)
             {
-                double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
-                double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
+                double x = 0, y = 0;
+
+                try
+                {
+                    x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                    y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+                }
+                catch (ArgumentException)
+                {
+                    Console.Error.WriteLine("ArgumentException: posición erronea ignorada.");
+                    return;
+                }
 
                 separatorLine.P2 = new DataPoint(x, y);
 
@@ -153,7 +183,7 @@ namespace Adaline
 
             foreach (var dp in dataPoints)
             {
-                ((separatorLine.ActivationF(dp) < 0) ? redPoints : bluePoints).Points.Add(dp);
+                ((separatorLine.ActivationF(dp) >= 0) ? redPoints : bluePoints).Points.Add(dp);
             }
         }
 

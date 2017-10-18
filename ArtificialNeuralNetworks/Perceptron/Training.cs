@@ -76,8 +76,18 @@ namespace Perceptron
 
         private void chrtHypSeparator_MouseDown(object sender, MouseEventArgs e)
         {
-            double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
-            double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
+            double x = 0, y = 0;
+
+            try
+            {
+                x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+            }
+            catch (ArgumentException)
+            {
+                Console.Error.WriteLine("ArgumentException: posición erronea ignorada.");
+                return;
+            }
 
             if (rbDrawLine.Checked)
             {
@@ -89,8 +99,18 @@ namespace Perceptron
 
         private void chrtHypSeparator_MouseUp(object sender, MouseEventArgs e)
         {
-            double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
-            double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
+            double x = 0, y = 0;
+
+            try
+            {
+                x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+            }
+            catch (ArgumentException)
+            {
+                Console.Error.WriteLine("ArgumentException: posición erronea ignorada.");
+                return;
+            }
 
             if (rbDrawLine.Checked)
             {
@@ -107,7 +127,7 @@ namespace Perceptron
                 var dp = new DataPoint(x, y);
                 dataPoints.Add(dp);
 
-                ((separatorLine.ActivationF(dp) == 1) ? redPoints : bluePoints).Points.Add(dp);
+                ((separatorLine.ActivationF(dp) >= 0) ? redPoints : bluePoints).Points.Add(dp);
             }
 
             StoreTrainingSet();
@@ -133,9 +153,19 @@ namespace Perceptron
         {
             if (dragging && rbDrawLine.Checked)
             {
-                double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
-                double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
+                double x = 0, y = 0;
 
+                try
+                {
+                    x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                    y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+                }
+                catch (ArgumentException)
+                {
+                    Console.Error.WriteLine("ArgumentException: posición erronea ignorada.");
+                    return;
+                }
+                
                 separatorLine.P2 = new DataPoint(x, y);
 
                 chartSepLine.Points.Clear();
@@ -156,7 +186,7 @@ namespace Perceptron
             {
                 // ActivationF determina si un punto está por encima o por debajo del hiperplano 
                 // separador.
-                ((separatorLine.ActivationF(dp) == 1) ? redPoints : bluePoints).Points.Add(dp);
+                ((separatorLine.ActivationF(dp) >= 0) ? redPoints : bluePoints).Points.Add(dp);
             }
         }
 
@@ -179,7 +209,7 @@ namespace Perceptron
                 
                 // Se transforma cada punto colocado por el usuario en un elemento del conjunto de entrenamiento.
                 // TrainingElement(C, X, Y, Sigma)
-                var trainingSet = dataPoints.Select(dp => new TrainingElement(1, dp.XValue, dp.YValues[0], separatorLine.ActivationF(dp)));
+                var trainingSet = dataPoints.Select(dp => new TrainingElement(1, dp.XValue, dp.YValues[0], (separatorLine.ActivationF(dp) >= 0) ? 1 : -1));
 
                 serializer.WriteObject(fs, trainingSet);
                 fs.Flush();

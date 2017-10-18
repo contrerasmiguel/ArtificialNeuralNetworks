@@ -35,7 +35,6 @@
             this.btnMainMenu = new System.Windows.Forms.Button();
             this.chrtHypSeparator = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnTrain = new System.Windows.Forms.Button();
-            this.lblIterations = new System.Windows.Forms.Label();
             this.lblVelocidad = new System.Windows.Forms.Label();
             this.tbarVelocidad = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.chrtHypSeparator)).BeginInit();
@@ -78,15 +77,6 @@
             this.btnTrain.UseVisualStyleBackColor = true;
             this.btnTrain.Click += new System.EventHandler(this.btnTrain_Click);
             // 
-            // lblIterations
-            // 
-            this.lblIterations.AutoSize = true;
-            this.lblIterations.Location = new System.Drawing.Point(435, 408);
-            this.lblIterations.Name = "lblIterations";
-            this.lblIterations.Size = new System.Drawing.Size(71, 13);
-            this.lblIterations.TabIndex = 11;
-            this.lblIterations.Text = "Iteraciones: 0";
-            // 
             // lblVelocidad
             // 
             this.lblVelocidad.AutoSize = true;
@@ -115,7 +105,6 @@
             this.ClientSize = new System.Drawing.Size(624, 442);
             this.Controls.Add(this.lblVelocidad);
             this.Controls.Add(this.tbarVelocidad);
-            this.Controls.Add(this.lblIterations);
             this.Controls.Add(this.btnTrain);
             this.Controls.Add(this.btnMainMenu);
             this.Controls.Add(this.chrtHypSeparator);
@@ -136,7 +125,6 @@
         private System.Windows.Forms.Button btnMainMenu;
         private System.Windows.Forms.DataVisualization.Charting.Chart chrtHypSeparator;
         private System.Windows.Forms.Button btnTrain;
-        private System.Windows.Forms.Label lblIterations;
         private System.Windows.Forms.Label lblVelocidad;
         private System.Windows.Forms.TrackBar tbarVelocidad;
     }

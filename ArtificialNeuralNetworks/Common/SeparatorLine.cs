@@ -76,10 +76,7 @@ namespace Common
         public double ActivationF(DataPoint dp)
         {
             // Ecuación de la recta que pasa por dos puntos igualada a cero.
-            double output = (dp.XValue - p1.XValue) * (p2.YValues[0] - p1.YValues[0]) / (p2.XValue - p1.XValue) + p1.YValues[0] - dp.YValues[0];
-
-            return (output < 0) ? -1 : 1;
+            return (dp.XValue - p1.XValue) * (p2.YValues[0] - p1.YValues[0]) / (p2.XValue - p1.XValue) + p1.YValues[0] - dp.YValues[0];
         }
-
     }
 }
