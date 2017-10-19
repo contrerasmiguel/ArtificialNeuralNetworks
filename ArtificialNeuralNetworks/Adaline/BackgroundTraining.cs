@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common;
+using System.Threading;
 
 namespace Adaline
 {
@@ -16,12 +17,6 @@ namespace Adaline
         public bool IsTraining
         {
             get { return isTraining; }
-        }
-
-        volatile bool isTrained;
-        public bool IsTrained
-        {
-            get { return isTrained; }
         }
 
         double speed;
@@ -40,7 +35,6 @@ namespace Adaline
             this.trainingSet = trainingSet;
             this.speed = speed;
             isTraining = false;
-            isTrained = false;
         }
 
         public double CalculateMeanSquaredError()
@@ -51,26 +45,31 @@ namespace Adaline
 
         public void Train()
         {
-            while (CalculateMeanSquaredError() > MAX_ERROR)
+            new Thread(delegate() 
             {
-                trainingSet.ForEach(trainingElement => 
+                while (CalculateMeanSquaredError() > MAX_ERROR)
                 {
-                    neuron.Wc += LEARNING_RATE
-                        * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
-                        * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
-                        * trainingElement.C;
+                    trainingSet.ForEach(trainingElement =>
+                    {
+                        neuron.Wc += LEARNING_RATE
+                            * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
+                            * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
+                            * trainingElement.C;
 
-                    neuron.Wx += LEARNING_RATE
-                        * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
-                        * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
-                        * trainingElement.X;
+                        neuron.Wx += LEARNING_RATE
+                            * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
+                            * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
+                            * trainingElement.X;
 
-                    neuron.Wy += LEARNING_RATE
-                        * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
-                        * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
-                        * trainingElement.Y;
-                });
-            }
+                        neuron.Wy += LEARNING_RATE
+                            * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
+                            * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
+                            * trainingElement.Y;
+                    });
+                    Thread.Sleep(1);
+                }
+                isTraining = false;
+            }).Start();
         }
     }
 }

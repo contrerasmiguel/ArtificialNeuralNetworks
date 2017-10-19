@@ -89,7 +89,6 @@ namespace Perceptron
         private void Test_FormClosed(object sender, FormClosedEventArgs e)
         {
             timer.Stop();
-            timer.Enabled = false;
             mainMenuWindow.Close();
         }
 

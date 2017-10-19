@@ -20,7 +20,11 @@ namespace Adaline
         Series chartSepLine, redPoints, bluePoints;
         List<TrainingElement> trainingSet;
         Neuron neuron;
-        BackgroundTraining backgroundTraining;
+        Timer timer;
+
+        const double MAX_ERROR = 0.00005;
+        double maxError;
+        const double LEARNING_RATE = 0.01;
 
         public Test(MainMenu mainMenu, List<TrainingElement> ts)
         {
@@ -28,8 +32,6 @@ namespace Adaline
             mainMenuWindow = mainMenu;
             trainingSet = ts;
             neuron = new Neuron();
-
-            backgroundTraining = new BackgroundTraining(neuron, trainingSet, tbarVelocidad.Value);
 
             chrtHypSeparator.Series.Clear();
             chrtHypSeparator.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
@@ -58,6 +60,8 @@ namespace Adaline
             bluePoints = chrtHypSeparator.Series.Add("Clase Azul");
             bluePoints.ChartType = SeriesChartType.Point;
             bluePoints.MarkerColor = Color.Blue;
+
+            timer = new Timer();
         }
 
         private void btnMainMenu_Click(object sender, EventArgs e)
@@ -68,7 +72,9 @@ namespace Adaline
 
         private void Test_VisibleChanged(object sender, EventArgs e)
         {
-            LoadTrainingSet();
+            lblTrainingStatus.Text = "Sin entrenar";
+            tbMaxError.Text = MAX_ERROR.ToString("F5");
+            PaintTrainingSetDots();
         }
 
         private void chrtHypSeparator_MouseUp(object sender, MouseEventArgs e)
@@ -81,13 +87,50 @@ namespace Adaline
 
         private void Test_FormClosed(object sender, FormClosedEventArgs e)
         {
+            timer.Stop();
             mainMenuWindow.Close();
         }
 
         private void btnTrain_Click(object sender, EventArgs e)
         {
+            lblTrainingStatus.Text = "Entrenando...";
             neuron.AssignRandomWeights();
-            backgroundTraining.Train();
+            timer.Interval = 1;
+            timer.Tick += Timer_Tick;
+            timer.Enabled = true;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (CalculateMeanSquaredError() > MAX_ERROR)
+            {
+                System.Diagnostics.Debug.WriteLine(CalculateMeanSquaredError());
+
+                trainingSet.ForEach(trainingElement =>
+                {
+                    neuron.Wc += LEARNING_RATE
+                        * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
+                        * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
+                        * trainingElement.C;
+
+                    neuron.Wx += LEARNING_RATE
+                        * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
+                        * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
+                        * trainingElement.X;
+
+                    neuron.Wy += LEARNING_RATE
+                        * (trainingElement.Sigma - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y))
+                        * neuron.OutputDerivative(trainingElement.C, trainingElement.X, trainingElement.Y)
+                        * trainingElement.Y;
+                });
+            }
+            else
+            {
+                timer.Stop();
+                lblTrainingStatus.Text = "¡Entrenada!";
+            }
+
             DrawSeparatorLine();
         }
 
@@ -109,7 +152,15 @@ namespace Adaline
             chartSepLine.Points.AddXY(xRight, yRight);
         }
 
-        private void LoadTrainingSet()
+        private void tbMaxError_TextChanged(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tbMaxError.Text, out maxError))
+            {
+                maxError = MAX_ERROR;
+            }
+        }
+
+        private void PaintTrainingSetDots()
         {
             redPoints.Points.Clear();
             bluePoints.Points.Clear();
@@ -118,6 +169,12 @@ namespace Adaline
             {
                 ((te.Sigma < 0) ? redPoints : bluePoints).Points.AddXY(te.X, te.Y);
             }
+        }
+
+        private double CalculateMeanSquaredError()
+        {
+            return trainingSet.Sum(trainingElement => Math.Pow(trainingElement.Sigma
+                - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y), 2)) / trainingSet.Count;
         }
     }
 }
