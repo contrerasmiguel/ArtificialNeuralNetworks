@@ -80,7 +80,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adaline\BackgroundTraining.cs" />
     <Compile Include="Adaline\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
