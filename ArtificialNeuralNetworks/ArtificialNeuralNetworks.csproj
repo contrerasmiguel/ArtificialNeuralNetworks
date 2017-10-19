@@ -80,12 +80,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adaline\BackgroundTraining.cs" />
     <Compile Include="Adaline\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Adaline\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Adaline\Neuron.cs" />
     <Compile Include="Adaline\Test.cs">
       <SubType>Form</SubType>
     </Compile>

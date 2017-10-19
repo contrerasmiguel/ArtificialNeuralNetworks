@@ -202,7 +202,7 @@ namespace Adaline
             using (var fs = File.Open(path, FileMode.Create))
             {
                 var serializer = new DataContractJsonSerializer(typeof(List<TrainingElement>));
-                var trainingSet = dataPoints.Select(dp => new TrainingElement(1, dp.XValue, dp.YValues[0], separatorLine.ActivationF(dp)));
+                var trainingSet = dataPoints.Select(dp => new TrainingElement(1, dp.XValue, dp.YValues[0], Math.Tanh(separatorLine.ActivationF(dp))));
 
                 serializer.WriteObject(fs, trainingSet);
                 fs.Flush();

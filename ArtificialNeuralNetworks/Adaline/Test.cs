@@ -19,12 +19,17 @@ namespace Adaline
         MainMenu mainMenuWindow;
         Series chartSepLine, redPoints, bluePoints;
         List<TrainingElement> trainingSet;
+        Neuron neuron;
+        BackgroundTraining backgroundTraining;
 
         public Test(MainMenu mainMenu, List<TrainingElement> ts)
         {
             InitializeComponent();
             mainMenuWindow = mainMenu;
             trainingSet = ts;
+            neuron = new Neuron();
+
+            backgroundTraining = new BackgroundTraining(neuron, trainingSet, tbarVelocidad.Value);
 
             chrtHypSeparator.Series.Clear();
             chrtHypSeparator.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
@@ -71,7 +76,7 @@ namespace Adaline
             double x = chrtHypSeparator.ChartAreas[0].AxisX.PixelPositionToValue((e.X < 0) ? 0 : e.X);
             double y = chrtHypSeparator.ChartAreas[0].AxisY.PixelPositionToValue((e.Y < 0) ? 0 : e.Y);
 
-            //((Output(1, x, y) < 0) ? redPoints : bluePoints).Points.AddXY(x, y);
+            ((neuron.Output(1, x, y) < 0) ? redPoints : bluePoints).Points.AddXY(x, y);
         }
 
         private void Test_FormClosed(object sender, FormClosedEventArgs e)
@@ -81,7 +86,9 @@ namespace Adaline
 
         private void btnTrain_Click(object sender, EventArgs e)
         {
-            //AssignRandomWeights();
+            neuron.AssignRandomWeights();
+            backgroundTraining.Train();
+            DrawSeparatorLine();
         }
 
         private void DrawSeparatorLine()
@@ -93,13 +100,13 @@ namespace Adaline
             double xRight = 100;
 
             // TO-DO: find out why yLeft depends on xRight.
-            //double yLeft = (wx * xRight - wc) / wy;
+            double yLeft = (neuron.Wx * xRight - neuron.Wc) / neuron.Wy;
 
             // TO-DO: find out why yRight depends on xLeft.
-            //double yRight = (wx * xLeft - wc) / wy;
+            double yRight = (neuron.Wx * xLeft - neuron.Wc) / neuron.Wy;
 
-            //chartSepLine.Points.AddXY(xLeft, yLeft);
-            //chartSepLine.Points.AddXY(xRight, yRight);
+            chartSepLine.Points.AddXY(xLeft, yLeft);
+            chartSepLine.Points.AddXY(xRight, yRight);
         }
 
         private void LoadTrainingSet()
