@@ -160,7 +160,6 @@
     <EmbeddedResource Include="Perceptron\Training.resx">
       <DependentUpon>Training.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="ArtificialNeuralNetworks_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
