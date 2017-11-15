@@ -174,7 +174,7 @@ namespace Adaline
         private double CalculateMeanSquaredError()
         {
             return trainingSet.Sum(trainingElement => Math.Pow(trainingElement.Sigma
-                - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y), 2)) / trainingSet.Count;
+                - neuron.Output(trainingElement.C, trainingElement.X, trainingElement.Y), 2)) / 2;
         }
     }
 }
